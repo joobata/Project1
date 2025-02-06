@@ -8,13 +8,13 @@ class MyApp(ShowBase):
         
 
     def SetupScene(self):
-      texUni = self.loader.loadTexture("./Assets/Universe/Universe.jpg")
-      texEarth = self.loader.loadTexture("./Assets/Planets/earth.png")
-      texMars = self.loader.loadTexture("./Assets/Planets/mars.png")
-      texJupiter = self.loader.loadTexture("./Assets/Planets/jupiter.png")
-      texSaturn = self.loader.loadTexture("./Assets/Planets/saturn.png")
-      texVenus = self.loader.loadTexture("./Assets/Planets/venus.png")
-      texUranus = self.loader.loadTexture("./Assets/Planets/uranus.png")
+      texUni = self.loader.loadTexture("./Assets/Universe/universebackdrop.jpg")
+      texEarth = self.loader.loadTexture("./Assets/Planets/earth.jpg")
+      texMars = self.loader.loadTexture("./Assets/Planets/mars.jpg")
+      texJupiter = self.loader.loadTexture("./Assets/Planets/jupiter.jpg")
+      texSaturn = self.loader.loadTexture("./Assets/Planets/saturn.jpg")
+      texVenus = self.loader.loadTexture("./Assets/Planets/venus.jpg")
+      texUranus = self.loader.loadTexture("./Assets/Planets/uranus.jpg")
       texShip = self.loader.loadTexture("./Assets/Spaceships/spacejet_C.png")
       texStation = self.loader.loadTexture("./Assets/SpaceStation/SpaceStation1_Dif2.png")
 
