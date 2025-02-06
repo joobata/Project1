@@ -8,7 +8,7 @@ class MyApp(ShowBase):
         
 
     def SetupScene(self):
-      texUni = self.loader.loadTexture("./Assets/Universe/universebackdrop.jpg")
+      texUni = self.loader.loadTexture("./Assets/Universe/universe.jpg")
       texEarth = self.loader.loadTexture("./Assets/Planets/earth.jpg")
       texMars = self.loader.loadTexture("./Assets/Planets/mars.jpg")
       texJupiter = self.loader.loadTexture("./Assets/Planets/jupiter.jpg")
