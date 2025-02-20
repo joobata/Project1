@@ -1,6 +1,8 @@
 from direct.showbase.ShowBase import ShowBase
-
+import DefensePaths as defensePaths
+import SpaceJamClasses as spaceJamClasses
 class MyApp(ShowBase):
+    
 
     def __init__(self):
         ShowBase.__init__(self)
@@ -8,68 +10,44 @@ class MyApp(ShowBase):
         
 
     def SetupScene(self):
-      texUni = self.loader.loadTexture("./Assets/Universe/universe.jpg")
-      texEarth = self.loader.loadTexture("./Assets/Planets/earth.jpg")
-      texMars = self.loader.loadTexture("./Assets/Planets/mars.jpg")
-      texJupiter = self.loader.loadTexture("./Assets/Planets/jupiter.jpg")
-      texSaturn = self.loader.loadTexture("./Assets/Planets/saturn.jpg")
-      texVenus = self.loader.loadTexture("./Assets/Planets/venus.jpg")
-      texUranus = self.loader.loadTexture("./Assets/Planets/uranus.jpg")
-      texShip = self.loader.loadTexture("./Assets/Spaceships/spacejet_C.png")
-      texStation = self.loader.loadTexture("./Assets/SpaceStation/SpaceStation1_Dif2.png")
+      self.Universe = spaceJamClasses.Universe(self.loader, "./Assets/Universe/Universe.x", self.render, 'Universe', 'Assets/Universe/universe.jpg', (0, 0, 0), 10000)
+      self.Planet1 = spaceJamClasses.Planet(self.loader, "./Assets/Planets/protoPlanet.x", self.render, 'Universe', 'Assets/Planets/earth.jpg', (150, 5000, 67), 350)
+      self.Planet2 = spaceJamClasses.Planet(self.loader, "./Assets/Planets/protoPlanet.x", self.render, 'Universe', 'Assets/Planets/mars.jpg', (900, 5000, 67), 250)
+      self.Planet3 = spaceJamClasses.Planet(self.loader, "./Assets/Planets/protoPlanet.x", self.render, 'Universe', 'Assets/Planets/jupiter.jpg', (-850, 5000, 67), 500)
+      self.Planet4 = spaceJamClasses.Planet(self.loader, "./Assets/Planets/protoPlanet.x", self.render, 'Universe', 'Assets/Planets/saturn.jpg', (1750, 5000, 67), 400)
+      self.Planet5 = spaceJamClasses.Planet(self.loader, "./Assets/Planets/protoPlanet.x", self.render, 'Universe', 'Assets/Planets/venus.jpg', (2700, 5000, 67), 350)
+      self.Planet6 = spaceJamClasses.Planet(self.loader, "./Assets/Planets/protoPlanet.x", self.render, 'Universe', 'Assets/Planets/uranus.jpg', (-1800, 5000, 67), 250)
+      self.Spaceship = spaceJamClasses.SpaceStation(self.loader, "./Assets/SpaceStation/spaceStation.x", self.render, 'Universe', 'Assets/SpaceStation/SpaceStation1_Dif2.png', (150, 8000, 3000), 50)
+      self.Station = spaceJamClasses.Spaceship(self.loader, "./Assets/Spaceships/Dumbledore.x", self.render, 'Hero', 'Assets/Spaceships/spacejet_C.png', (150, 6000, 1500), 200)
+      fullCycle = 60
 
-      self.Universe = self.loader.loadModel("./Assets/Universe/Universe.x")
-      self.Universe.reparentTo(self.render)
-      self.Universe.setScale(15000)
-      self.Universe.setTexture(texUni, 1)
+      for j in range(fullCycle):
+         spaceJamClasses.Drone.droneCount += 1
+         nickName = "Drone" + str(spaceJamClasses.Drone.droneCount)
+  
+         self.DrawCloudDefense(self.Planet1, nickName)
+         self.DrawBaseballSeams(self.Station, nickName, j, fullCycle, 2)
+         self.DrawCircle(self.Planet2, nickName + "_X", j, fullCycle, axis='X')
+         self.DrawCircle(self.Planet3, nickName + "_Y", j, fullCycle, axis='Y')
+         self.DrawCircle(self.Planet4, nickName + "_Z", j, fullCycle, axis='Z')
+      
+    def DrawBaseballSeams(self, centralObject, droneName, step, numSeams, radius = 1):
+     unitVec = defensePaths.BaseballSeams(step, numSeams, B = 0.4)
+     unitVec.normalize()
+     position = unitVec * radius * 250 + centralObject.modelNode.getPos()
+     spaceJamClasses.Drone(self.loader, "./Assets/DroneDefender/DroneDefender.obj", self.render, droneName, "./Assets/DroneDefender/octotoad1_auv.png", position, 5)
 
-      self.Planet1 = self.loader.loadModel("./Assets/Planets/protoPlanet.x")
-      self.Planet1.reparentTo(self.render)
-      self.Planet1.setPos(150, 5000, 67)
-      self.Planet1.setScale(350)
-      self.Planet1.setTexture(texEarth, 1)
+    def DrawCloudDefense(self, centralObject, droneName):
+     unitVec = defensePaths.Cloud()
+     unitVec.normalize()
+     position = unitVec * 500 + centralObject.modelNode.getPos()
+     spaceJamClasses.Drone(self.loader, "./Assets/DroneDefender/DroneDefender.obj", self.render, droneName, "./Assets/DroneDefender/octotoad1_auv.png", position, 10)
 
-      self.Planet2 = self.loader.loadModel("./Assets/Planets/protoPlanet.x")
-      self.Planet2.reparentTo(self.render)
-      self.Planet2.setPos(900, 5000, 67)
-      self.Planet2.setScale(250)
-      self.Planet2.setTexture(texMars, 1)
+    def DrawCircle(self, centralObject, droneName, step, numDrones, radius = 1, axis = 'X'):
+     for i in range(numDrones):
+        position = defensePaths.circleMath(i, numDrones, (radius * 500), axis) + centralObject.modelNode.getPos()
+        spaceJamClasses.Drone(self.loader, "./Assets/DroneDefender/DroneDefender.obj", self.render, droneName + str(i), "./Assets/DroneDefender/octotoad1_auv.png", position, 5)
 
-      self.Planet3 = self.loader.loadModel("./Assets/Planets/protoPlanet.x")
-      self.Planet3.reparentTo(self.render)
-      self.Planet3.setPos(-850, 5000, 67)
-      self.Planet3.setScale(500)
-      self.Planet3.setTexture(texJupiter, 1)
-
-      self.Planet4 = self.loader.loadModel("./Assets/Planets/protoPlanet.x")
-      self.Planet4.reparentTo(self.render)
-      self.Planet4.setPos(1750, 5000, 67)
-      self.Planet4.setScale(400)
-      self.Planet4.setTexture(texSaturn, 1)
-
-      self.Planet5 = self.loader.loadModel("./Assets/Planets/protoPlanet.x")
-      self.Planet5.reparentTo(self.render)
-      self.Planet5.setPos(2700, 5000, 67)
-      self.Planet5.setScale(350)
-      self.Planet5.setTexture(texVenus, 1)
-
-      self.Planet6 = self.loader.loadModel("./Assets/Planets/protoPlanet.x")
-      self.Planet6.reparentTo(self.render)
-      self.Planet6.setPos(-1800, 5000, 67)
-      self.Planet6.setScale(250)
-      self.Planet6.setTexture(texUranus, 1)
-
-      self.Spaceship = self.loader.loadModel("./Assets/Spaceships/Dumbledore.x")
-      self.Spaceship.reparentTo(self.render)
-      self.Spaceship.setPos(150, 6000, 1500)
-      self.Spaceship.setScale(200)
-      self.Spaceship.setTexture(texShip, 1)
-
-      self.Station = self.loader.loadModel("./Assets/SpaceStation/spaceStation.x")
-      self.Station.reparentTo(self.render)
-      self.Station.setPos(150, 8000, 3000)
-      self.Station.setScale(50)
-      self.Station.setTexture(texStation, 1)
 
 app = MyApp()
 app.run()
